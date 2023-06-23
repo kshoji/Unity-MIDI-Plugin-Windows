@@ -69,10 +69,17 @@ namespace jp.kshoji.unity.midi.win32
                     updatedInPortKeys.Add(deviceIdentifier);
                     if (!inPorts.ContainsKey(deviceIdentifier))
                     {
-                        var midiInPort = new MidiInPort((UIntPtr)deviceId, deviceIdentifier, caps);
-                        midiInPort.MessageReceived += InPortMessageReceived;
-                        inPorts[deviceIdentifier] = midiInPort;
-                        OnMidiInputDeviceAttached?.Invoke(deviceIdentifier);
+                        try
+                        {
+                            var midiInPort = new MidiInPort((UIntPtr)deviceId, deviceIdentifier, caps);
+                            midiInPort.MessageReceived += InPortMessageReceived;
+                            inPorts[deviceIdentifier] = midiInPort;
+                            OnMidiInputDeviceAttached?.Invoke(deviceIdentifier);
+                        }
+                        catch (ApplicationException e)
+                        {
+                            // UnityEngine.Debug.LogError(e.Message);
+                        }
                     }
                 }
 
