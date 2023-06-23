@@ -216,6 +216,10 @@ namespace jp.kshoji.unity.midi.win32
                     
                 }
             }
+            else if (wMsg == Win32API.MidiInMessage.MIM_OPEN || wMsg == Win32API.MidiInMessage.MIM_CLOSE)
+            {
+                // ignore these messages
+            }
             else
             {
                 Debug.Log($"Invalid MessageType: {wMsg}");
