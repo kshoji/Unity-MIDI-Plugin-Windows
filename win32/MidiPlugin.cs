@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
-using UnityEngine;
 
 namespace jp.kshoji.unity.midi.win32
 {
@@ -38,8 +37,6 @@ namespace jp.kshoji.unity.midi.win32
     public class MidiPlugin
     {
         #region Instantiation
-        private static MidiPlugin instance;
-        private static readonly object LockObject = new object();
 
         private Thread thread;
         private bool isThreadRunning;
@@ -47,23 +44,9 @@ namespace jp.kshoji.unity.midi.win32
         /// <summary>
         /// Get an instance
         /// </summary>
-        public static MidiPlugin Instance
-        {
-            get
-            {
-                if (instance != null)
-                {
-                    return instance;
-                }
+        public static MidiPlugin Instance => lazyInstance.Value;
 
-                lock (LockObject)
-                {
-                    instance = new MidiPlugin();
-                }
-
-                return instance;
-            }
-        }
+        private static readonly Lazy<MidiPlugin> lazyInstance = new (() => new MidiPlugin(), LazyThreadSafetyMode.ExecutionAndPublication);
 
         private MidiPlugin()
         {
@@ -229,6 +212,26 @@ namespace jp.kshoji.unity.midi.win32
             }
 
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Get the device vendor id from specified device ID.
+        /// </summary>
+        /// <param name="deviceId">the device ID</param>
+        /// <returns>the device vendor id, empty if device not connected.</returns>
+        public string GetVendorId(string deviceId)
+        {
+            return deviceId.Split('-')[0].Substring(1);
+        }
+
+        /// <summary>
+        /// Get the device product id from specified device ID.
+        /// </summary>
+        /// <param name="deviceId">the device ID</param>
+        /// <returns>the device product id, empty if device not connected.</returns>
+        public string GetProductId(string deviceId)
+        {
+            return deviceId.Split('-')[1].Substring(1);
         }
         #endregion
 
