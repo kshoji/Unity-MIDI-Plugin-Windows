@@ -46,7 +46,7 @@ namespace jp.kshoji.unity.midi.win32
         /// </summary>
         public static MidiPlugin Instance => lazyInstance.Value;
 
-        private static readonly Lazy<MidiPlugin> lazyInstance = new (() => new MidiPlugin(), LazyThreadSafetyMode.ExecutionAndPublication);
+        private static readonly Lazy<MidiPlugin> lazyInstance = new Lazy<MidiPlugin>(() => new MidiPlugin(), LazyThreadSafetyMode.ExecutionAndPublication);
 
         private MidiPlugin()
         {
