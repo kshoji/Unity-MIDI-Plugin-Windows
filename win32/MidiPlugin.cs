@@ -39,7 +39,7 @@ namespace jp.kshoji.unity.midi.win32
         #region Instantiation
 
         private Thread thread;
-        private bool isThreadRunning;
+        private volatile bool isThreadRunning;
 
         /// <summary>
         /// Get an instance
