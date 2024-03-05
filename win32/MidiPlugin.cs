@@ -76,7 +76,7 @@ namespace jp.kshoji.unity.midi.win32
                             inPorts[deviceIdentifier] = midiInPort;
                             OnMidiInputDeviceAttached?.Invoke(deviceIdentifier);
                         }
-                        catch (ApplicationException e)
+                        catch (ApplicationException)
                         {
                             // UnityEngine.Debug.LogError(e.Message);
                         }
