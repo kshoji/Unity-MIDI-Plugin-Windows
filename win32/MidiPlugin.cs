@@ -55,7 +55,17 @@ namespace jp.kshoji.unity.midi.win32
 
         void UpdateMidiInPortList()
         {
-            var inDevs = Win32API.midiInGetNumDevs();
+            uint inDevs;
+            try
+            {
+                inDevs = Win32API.midiInGetNumDevs();
+            }
+            catch (NullReferenceException)
+            {
+                // API Error on System.String.CopyTo
+                return;
+            }
+
             lock (inPorts)
             {
                 var originalInPortKeys = inPorts.Keys.ToList().AsReadOnly();
@@ -99,7 +109,17 @@ namespace jp.kshoji.unity.midi.win32
 
         void UpdateMidiOutPortList()
         {
-            var outDevs = Win32API.midiOutGetNumDevs();
+            uint outDevs;
+            try
+            {
+                outDevs = Win32API.midiOutGetNumDevs();
+            }
+            catch (NullReferenceException)
+            {
+                // API Error on System.String.CopyTo
+                return;
+            }
+
             lock (outPorts)
             {
                 var originalOutPortKeys = outPorts.Keys.ToList().AsReadOnly();
