@@ -228,7 +228,23 @@ namespace jp.kshoji.unity.midi.win32
         /// <returns>the device vendor id, empty if device not connected.</returns>
         public string GetVendorId(string deviceId)
         {
-            return deviceId.Split('-')[0].Substring(1);
+            lock (inPorts)
+            {
+                if (inPorts.ContainsKey(deviceId))
+                {
+                    return inPorts[deviceId].VendorId;
+                }
+            }
+
+            lock (outPorts)
+            {
+                if (outPorts.ContainsKey(deviceId))
+                {
+                    return outPorts[deviceId].VendorId;
+                }
+            }
+
+            return string.Empty;
         }
 
         /// <summary>
@@ -238,7 +254,23 @@ namespace jp.kshoji.unity.midi.win32
         /// <returns>the device product id, empty if device not connected.</returns>
         public string GetProductId(string deviceId)
         {
-            return deviceId.Split('-')[1].Substring(1);
+            lock (inPorts)
+            {
+                if (inPorts.ContainsKey(deviceId))
+                {
+                    return inPorts[deviceId].ProductId;
+                }
+            }
+
+            lock (outPorts)
+            {
+                if (outPorts.ContainsKey(deviceId))
+                {
+                    return outPorts[deviceId].ProductId;
+                }
+            }
+
+            return string.Empty;
         }
         #endregion
 
